@@ -69,31 +69,31 @@ static const struct arg args[] = {
 	/* function       format                           argument */
 
 	/* CPU Percentage */
-	{ cpu_perc,       " CPU: %s%% |",                  NULL },
+	{ cpu_perc,       "󰍛 %s%% |",                  NULL },
 
 	/* CPU Temperature */
-	{ temp,           " Temp: %s°C |",                 "/sys/class/thermal/thermal_zone0/temp" },
+	{ temp,           "  %s°C |",                 "/sys/class/thermal/thermal_zone0/temp" },
 
 	/* RAM Usage Percentage */
-	{ ram_perc,       " RAM: %s%% |",                  NULL },
+	{ ram_used,       "   %s |",                  NULL },
 
 	/* Active Keyboard Layout */
-	{ keymap,         " Kbd: %s |",                    NULL },
+	{ keymap,         " 󰥻 %s |",                    NULL },
 
 	/* WiFi ESSID Name (Updated for Fedora) */
-	{ wifi_essid,     " WiFi: %s |",                   "wlp3s0" },
+	{ wifi_essid,     " 󰖩 %s |",                   "wlp3s0" },
 
 	/* Bluetooth Connected Device Name (Safe Escaped Shell String) */
-	{ run_command,    " BT: %s |",                     "bluetoothctl info | awk -F': ' '/Name:/ {print $2}' | grep . || echo 'Off'" },
+	{ run_command,    " 󰂯 %s |",                     "bluetoothctl info | awk -F': ' '/Name:/ {print $2}' | grep . || echo 'Off'" },
 
 	/* Volume Level (via run_command - for PipeWire/WirePlumber) */
-	{ run_command,    " Vol: %s |",                    "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)\"%\"}'" },
-
+	{ run_command,    "  %s |",                    "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)\"%\"}'" },
+	{ run_command,    " 󰃛 %s |",                    "brightnessctl -m | cut -d, -f4" },
 	/* Battery Percentage & State */
-	{ battery_perc,   " Bat: %s%%",                    "BAT1" },
-	{ battery_state,  " (%s) |",                       "BAT1" },
+	{ battery_perc,   "  %s%%",                    "BAT1" },
+	{ battery_state,  " %s |",                       "BAT1" },
 
 	/* Time (24h) and Date (dd/mm/yy) */
-	{ datetime,       "%s",                            "%d/%m/%y %H:%M" },
+	{ datetime,       "%s",                            "  %d/%m/%y | %H:%M" },
 };
 

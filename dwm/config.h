@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -11,8 +12,8 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "iosevka:size=11" };
+static const char dmenufont[]       = "iosevka:size=11";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -69,13 +70,27 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *music_play_pause[] = { "playerctl", "play-pause", "-p", "spotify", NULL };
 static const char *music_prev[]       = { "playerctl", "previous", "-p", "spotify",  NULL };
 static const char *music_next[]       = { "playerctl", "next", "-p", "spotify",  NULL };
+static const char *bluetooth[]       = { "st", "-e", "bluetoothctl", NULL };
+static const char *network[]       = { "st", "-e", "nmtui", NULL };
+
+/* Volume commands (WirePlumber) */
+static const char *mutevol[]     = { "wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
+static const char *upvol[]       = { "wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
+static const char *downvol[]     = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
+static const char *mutemic[]     = { "wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL };
+
+/* Brightness commands (brightnessctl) */
+static const char *brightness_up[]   = { "brightnessctl", "set", "10%+", NULL };
+static const char *brightness_down[] = { "brightnessctl", "set", "10%-", NULL };
 
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },	
+	{ MODKEY,                       XK_b,      spawn,          {.v = bluetooth} },	
+	{ MODKEY,                       XK_n,      spawn,          {.v = network} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -89,7 +104,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_bracketleft,  spawn,          {.v = music_prev } },
         { MODKEY,                       XK_bracketright, spawn,          {.v = music_next } },
 
-//	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 //	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 //	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 //	{ MODKEY,                       XK_space,  setlayout,      {0} },
@@ -110,7 +125,16 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+    /* modifier          key                           function        argument */
+    { 0,                 XF86XK_AudioMute,             spawn,          {.v = mutevol } },
+    { 0,                 XF86XK_AudioLowerVolume,      spawn,          {.v = downvol } },
+    { 0,                 XF86XK_AudioRaiseVolume,      spawn,          {.v = upvol   } },
+    { 0,                 XF86XK_AudioMicMute,          spawn,          {.v = mutemic } },
+    { 0,                 XF86XK_MonBrightnessDown,     spawn,          {.v = brightness_down } },
+    { 0,                 XF86XK_MonBrightnessUp,       spawn,          {.v = brightness_up } },
 };
+
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
