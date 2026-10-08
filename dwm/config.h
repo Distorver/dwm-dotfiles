@@ -83,6 +83,8 @@ static const char *mutemic[]     = { "wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE
 static const char *brightness_up[]   = { "brightnessctl", "set", "10%+", NULL };
 static const char *brightness_down[] = { "brightnessctl", "set", "10%-", NULL };
 
+static const char *powertoggle[]  = { "/home/distorver/.config/scripts/power-profile.sh", NULL };
+
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -90,6 +92,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,      spawn,          {.v = bluetooth} },	
 	{ MODKEY,                       XK_n,      spawn,          {.v = network} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_o,      spawn,          {.v = powertoggle } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -104,10 +107,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_bracketleft,  spawn,          {.v = music_prev } },
         { MODKEY,                       XK_bracketright, spawn,          {.v = music_next } },
 
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-//	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+//	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+//	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[1]} },
 //	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-//	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_t,      setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_f,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },

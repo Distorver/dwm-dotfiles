@@ -68,8 +68,10 @@ static const char unknown_str[] = "n/a";
 static const struct arg args[] = {
 	/* function       format                           argument */
 
+	{ run_command,   "[ %s ] |",      "powerprofilesctl get" },
+
 	/* CPU Percentage */
-	{ cpu_perc,       "󰍛 %s%% |",                  NULL },
+	{ cpu_perc,       " 󰍛 %s%% |",                  NULL },
 
 	/* CPU Temperature */
 	{ temp,           "  %s°C |",                 "/sys/class/thermal/thermal_zone0/temp" },
@@ -95,5 +97,6 @@ static const struct arg args[] = {
 
 	/* Time (24h) and Date (dd/mm/yy) */
 	{ datetime,       "%s",                            "  %d/%m/%y | %H:%M" },
+
 };
 
