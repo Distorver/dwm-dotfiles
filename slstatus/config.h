@@ -65,38 +65,56 @@ static const char unknown_str[] = "n/a";
  * wifi_perc           WiFi signal in percent          interface name (wlan0)
  */
 
+/*
 static const struct arg args[] = {
-	/* function       format                           argument */
 
 	{ run_command,   "[ %s ] |",      "powerprofilesctl get" },
 
-	/* CPU Percentage */
 	{ cpu_perc,       " 󰍛 %s%% |",                  NULL },
 
-	/* CPU Temperature */
 	{ temp,           "  %s°C |",                 "/sys/class/thermal/thermal_zone0/temp" },
 
-	/* RAM Usage Percentage */
 	{ ram_used,       "   %s |",                  NULL },
 
-	/* Active Keyboard Layout */
 	{ keymap,         " 󰥻 %s |",                    NULL },
 
-	/* WiFi ESSID Name (Updated for Fedora) */
 	{ wifi_essid,     " 󰖩 %s |",                   "wlp3s0" },
 
-	/* Bluetooth Connected Device Name (Safe Escaped Shell String) */
 	{ run_command,    " 󰂯 %s |",                     "bluetoothctl info | awk -F': ' '/Name:/ {print $2}' | grep . || echo 'Off'" },
 
-	/* Volume Level (via run_command - for PipeWire/WirePlumber) */
 	{ run_command,    "  %s |",                    "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)\"%\"}'" },
 	{ run_command,    " 󰃛 %s |",                    "brightnessctl -m | cut -d, -f4" },
-	/* Battery Percentage & State */
 	{ battery_perc,   "  %s%%",                    "BAT1" },
 	{ battery_state,  " %s |",                       "BAT1" },
 
-	/* Time (24h) and Date (dd/mm/yy) */
 	{ datetime,       "%s",                            "  %d/%m/%y | %H:%M" },
 
 };
+*/
 
+static const struct arg args[] = {
+	{ run_command,   "[ %s ] |",   "powerprofilesctl get" },
+	{ cpu_perc,      " 󰍛 %s%% |",   NULL },
+	{ temp,          "  %s°C |", "/sys/class/thermal/thermal_zone0/temp" },
+	{ ram_used,      "   %s |",    NULL },
+	{ keymap,        " 󰥻 %s |",    NULL },
+	{ wifi_essid,    " 󰖩 %s |", "wlp3s0" },
+
+	/* Bluetooth: Off / no bt / device name */
+	{ run_command,   "  %s |",
+	  "if [ \"$(bluetoothctl show | awk '/Powered:/ {print $2}')\" = \"no\" ]; then echo \"󰂲 Off\"; else N=\"$(bluetoothctl info | awk -F': ' '/Name:/ {print $2}')\"; [ -z \"$N\" ] && echo 'no device' || echo \"$N\"; fi" },
+
+	/* Volume: icon changes with level */
+	{ run_command,   " %s |",
+	  "V=$(wpctl get-volume @DEFAULT_AUDIO_SINK@); if echo \"$V\" | grep -q MUTED; then echo \" Muted\"; else N=$(echo \"$V\" | awk '{print int($2*100)}'); if [ \"$N\" -le 30 ]; then echo \" $N%\"; elif [ \"$N\" -le 70 ]; then echo \" $N%\"; else echo \" $N%\"; fi; fi" },
+
+	/* Brightness: icon changes with level */
+	{ run_command,   " %s |",
+	  "B=$(brightnessctl -m | cut -d, -f4 | tr -d '%'); if [ \"$B\" -le 33 ]; then echo \"󰃞 $B%\"; elif [ \"$B\" -le 66 ]; then echo \"󰃟 $B%\"; else echo \"󰃠 $B%\"; fi" },
+
+
+		/* Battery: icon changes with level, charging icon when plugged in */
+	{ run_command,   " %s |",
+	  "C=$(cat /sys/class/power_supply/BAT1/capacity); S=$(cat /sys/class/power_supply/BAT1/status); if [ \"$S\" = Charging ]; then echo \"󰂄 $C%\"; elif [ \"$C\" -le 15 ]; then echo \" $C%\"; elif [ \"$C\" -le 40 ]; then echo \" $C%\"; elif [ \"$C\" -le 70 ]; then echo \" $C%\"; elif [ \"$C\" -le 90 ]; then echo \" $C%\"; else echo \" $C%\"; fi" },
+	{ datetime,      "  %s",           "%d/%m/%y | %H:%M" },
+};
