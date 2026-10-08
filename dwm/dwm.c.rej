@@ -1,0 +1,58 @@
+--- dwm.c
++++ dwm.c
+@@ -206,7 +204,6 @@ static void setup(void);
+ static void seturgent(Client *c, int urg);
+ static void showhide(Client *c);
+ static void spawn(const Arg *arg);
+-static void spawndmenu(const Arg *arg);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
+ static void tile(Monitor *m);
+@@ -263,13 +260,11 @@ static void (*handler[LASTEvent]) (XEvent *) = {
+ static Atom wmatom[WMLast], netatom[NetLast];
+ static int running = 1;
+ static Cur *cursor[CurLast];
+-static Clr **scheme, **schemedark, **schemelight;
++static Clr **scheme;
+ static Display *dpy;
+ static Drw *drw;
+ static Monitor *mons, *selmon;
+ static Window root, wmcheckwin;
+-static const char **dmenucmd;
+-static int colormodechanged;
+ 
+ /* configuration, allows nested code to access above variables */
+ #include "config.h"
+@@ -489,12 +484,9 @@ cleanup(void)
+ 		cleanupmon(mons);
+ 	for (i = 0; i < CurLast; i++)
+ 		drw_cur_free(drw, cursor[i]);
+-	for (i = 0; i < LENGTH(colorsdark); i++) {
+-		free(schemedark[i]);
+-		free(schemelight[i]);
+-	}
+-	free(schemedark);
+-	free(schemelight);
++	for (i = 0; i < LENGTH(colors); i++)
++		free(scheme[i]);
++	free(scheme);
+ 	XDestroyWindow(dpy, wmcheckwin);
+ 	drw_free(drw);
+ 	XSync(dpy, False);
+@@ -1590,13 +1541,9 @@ setup(void)
+ 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
+ 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
+ 	/* init appearance */
+-	schemedark = ecalloc(LENGTH(colorsdark), sizeof(Clr *));
+-	schemelight = ecalloc(LENGTH(colorslight), sizeof(Clr *));
+-	for (i = 0; i < LENGTH(colorsdark); i++) {
+-		schemedark[i] = drw_scm_create(drw, colorsdark[i], 3);
+-		schemelight[i] = drw_scm_create(drw, colorslight[i], 3);
+-	}
+-  setcolormode();
++	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
++	for (i = 0; i < LENGTH(colors); i++)
++		scheme[i] = drw_scm_create(drw, colors[i], 3);
+ 	/* init bars */
+ 	updatebars();
+ 	updatestatus();
