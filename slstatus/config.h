@@ -104,6 +104,7 @@ static const struct arg args[] = {
 	{ run_command,   "  %s |",
 	  "if [ \"$(bluetoothctl show | awk '/Powered:/ {print $2}')\" = \"no\" ]; then echo \"󰂲 Off\"; else N=\"$(bluetoothctl info | awk -F': ' '/Name:/ {print $2}')\"; [ -z \"$N\" ] && echo 'no device' || echo \"$N\"; fi" },
 
+	{ run_command,   "  %s |",  "/home/distorver/.config/scripts/spotify.sh" },
 	/* Volume: icon changes with level */
 	{ run_command,   " %s |",
 	  "V=$(wpctl get-volume @DEFAULT_AUDIO_SINK@); if echo \"$V\" | grep -q MUTED; then echo \" Muted\"; else N=$(echo \"$V\" | awk '{print int($2*100)}'); if [ \"$N\" -le 30 ]; then echo \" $N%\"; elif [ \"$N\" -le 70 ]; then echo \" $N%\"; else echo \" $N%\"; fi; fi" },
