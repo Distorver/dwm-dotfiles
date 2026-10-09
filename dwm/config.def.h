@@ -65,7 +65,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", "monospace:size=10", "-nb", "#222222", "-nf", "#bbbbbb", "-sb", "#005577", "-sf", "#eeeeee", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *music_play_pause[] = { "playerctl", "play-pause", "-p", "spotify", NULL };
 static const char *music_prev[]       = { "playerctl", "previous", "-p", "spotify",  NULL };
@@ -118,6 +118,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_F5,     xresreload,     {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -156,3 +157,26 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 
+/* X resources to update */
+static const XResPref resources[] = {
+	/* name                type     address */
+	{ "dwm.font",          STRING,  &fonts[0] },
+	{ "dwm.dmenufont",     STRING,  &dmenucmd[4] },
+	{ "dwm.background",    STRING,  &dmenucmd[6] },
+	{ "dwm.foreground",    STRING,  &dmenucmd[8] },
+	{ "dwm.backgroundSel", STRING,  &dmenucmd[10] },
+	{ "dwm.foregroundSel", STRING,  &dmenucmd[12] },
+	{ "dwm.foreground",    STRING,  &colors[SchemeNorm][ColFg] },
+	{ "dwm.background",    STRING,  &colors[SchemeNorm][ColBg] },
+	{ "dwm.border",        STRING,  &colors[SchemeNorm][ColBorder] },
+	{ "dwm.foregroundSel", STRING,  &colors[SchemeSel][ColFg] },
+	{ "dwm.backgroundSel", STRING,  &colors[SchemeSel][ColBg] },
+	{ "dwm.borderSel",     STRING,  &colors[SchemeSel][ColBorder] },
+	{ "dwm.borderpx",      INTEGER, &borderpx },
+	{ "dwm.snap",          INTEGER, &snap },
+	{ "dwm.showbar",       INTEGER, &showbar },
+	{ "dwm.topbar",        INTEGER, &topbar },
+	{ "dwm.nmaster",       INTEGER, &nmaster },
+	{ "dwm.resizehints",   INTEGER, &resizehints },
+	{ "dwm.mfact",         FLOAT,   &mfact },
+};
