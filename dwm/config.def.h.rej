@@ -1,20 +1,12 @@
 --- config.def.h
 +++ config.def.h
-@@ -56,14 +51,13 @@ static const Layout layouts[] = {
- #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+@@ -2,6 +2,9 @@
+ /* Default settings; can be overriden by command line. */
  
- /* commands */
--static char dmenumon[2] = "0"; /* component of dmenu{dark,light}, manipulated in spawndmenu() */
--static const char *dmenudark[] =  { "dmenu_run", "-m", dmenumon, "-i", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
--static const char *dmenulight[] = { "dmenu_run", "-m", dmenumon, "-i", "-fn", dmenufont, "-nb", col_gray3, "-nf", col_gray1, "-sb", col_cyan, "-sf", col_gray4, NULL };
-+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
- static const char *termcmd[]  = { "st", NULL };
- 
- static const Key keys[] = {
- 	/* modifier                     key        function        argument */
--	{ MODKEY,                       XK_p,      spawndmenu,     {0} },
-+	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
- 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
- 	{ MODKEY,                       XK_b,      togglebar,      {0} },
- 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+ static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
++static int centered = 1;                    /* -c option; centers dmenu on screen */
++static int min_width = 500;                    /* minimum width when centered */
++static const float menu_height_ratio = 4.0f;  /* This is the ratio used in the original calculation */
+ /* -fn option overrides fonts[0]; default X11 font or font set */
+ static const char *fonts[] = {
+ 	"monospace:size=10"

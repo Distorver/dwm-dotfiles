@@ -1,0 +1,10 @@
+[global]
+    # Set how long a standard notification stays on screen (e.g., 3 seconds)
+    timeout = 3
+
+    # Set the maximum width and height for icons/images in pixels (e.g., 32x32)
+    max_icon_size = 40
+
+    # Optional: Set where the icon should align relative to the text
+    # Options: left, right, top, min
+    icon_position = left

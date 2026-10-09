@@ -85,6 +85,8 @@ static const char *brightness_down[] = { "brightnessctl", "set", "10%-", NULL };
 
 static const char *powertoggle[]  = { "/home/distorver/.config/scripts/power-profile.sh", NULL };
 
+static const char *powermenu[]  = { "/home/distorver/.config/scripts/sys.sh", NULL };
+
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -93,6 +95,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_n,      spawn,          {.v = network} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_o,      spawn,          {.v = powertoggle } },
+	{ MODKEY,                       XK_x,      spawn,          {.v = powermenu} },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
