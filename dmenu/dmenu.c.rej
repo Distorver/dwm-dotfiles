@@ -1,0 +1,25 @@
+--- dmenu.c
++++ dmenu.c
+@@ -201,8 +233,9 @@ drawmenu(void)
+ 
+ 	if (lines > 0) {
+ 		/* draw vertical list */
++		y = bh;
+ 		for (item = curr; item != next; item = item->right)
+-			drawitem(item, x, y += bh, mw - x);
++			y = drawitem(item, x, y, mw - x);
+ 	} else if (matches) {
+ 		/* draw horizontal list */
+ 		x += inputw;
+@@ -667,7 +700,10 @@ setup(void)
+ 	/* calculate menu geometry */
+ 	bh = drw->fonts->h + 2;
+ 	lines = MAX(lines, 0);
+-	mh = (lines + 1) * bh;
++	/* default values for image_size */
++	if (image_size < 0)
++		image_size = (lines > 0) ? 2 * bh : 8 * bh;
++	mh = bh + ((lines > 0) ? MAX(lines * bh, image_size) : 0);
+ #ifdef XINERAMA
+ 	i = 0;
+ 	if (parentwin == root && (info = XineramaQueryScreens(dpy, &n))) {

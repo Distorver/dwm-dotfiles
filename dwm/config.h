@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 8;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
@@ -24,6 +24,7 @@ static const char *colors[][3]      = {
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
+
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5" };
@@ -89,6 +90,9 @@ static const char *powertoggle[]  = { "/home/distorver/.config/scripts/power-pro
 static const char *powermenu[]  = { "/home/distorver/.config/scripts/sys.sh", NULL };
 static const char *wallpaper[]  = { "/home/distorver/.config/scripts/wallpaper.sh", NULL };
 
+static const char *themecreate[] = {"/home/distorver/.config/scripts/theme-create.sh", NULL };
+static const char *theme[] = {"/home/distorver/.config/scripts/theme.sh", NULL };
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },	
@@ -98,6 +102,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_o,      spawn,          {.v = powertoggle } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = wallpaper } },
 	{ MODKEY,                       XK_x,      spawn,          {.v = powermenu} },
+	{ MODKEY,                       XK_t,      spawn,          {.v = theme} },
+	{ MODKEY|ShiftMask,             XK_t,      spawn,          {.v = themecreate} },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -115,7 +121,7 @@ static const Key keys[] = {
 //	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 //	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[1]} },
 //	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_t,      setlayout,      {0} },
+	{ MODKEY,                       XK_g,      setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_f,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
